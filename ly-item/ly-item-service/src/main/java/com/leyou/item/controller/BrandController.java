@@ -3,13 +3,13 @@ package com.leyou.item.controller;
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.service.BrandService;
 import com.leyou.pojo.Brand;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Description:
@@ -20,10 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("brand")
+@Slf4j
 public class BrandController {
 
     @Autowired
     private BrandService brandService;
+
+    /**
+     * @Description: 查询所有并且分页
+     * @params: key
+     * @return: result
+     * @author: WangJiLin
+     * @Date: 2019/7/31
+     */
     @GetMapping("page")
     public ResponseEntity<PageResult<Brand>> queryBrandByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -36,5 +45,31 @@ public class BrandController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(result);
+    }
+
+    /**
+     * @Description: 新增品牌
+     * @params: brand
+     * @return:
+     * @author: WangJiLin
+     * @Date: 2019/7/31
+     */
+    @PostMapping
+    public ResponseEntity<Void> saveBrand(Brand brand, @RequestParam("categories") List<Long> categories) {
+        log.info(categories+"cids---------------------------------------"+brand);
+        this.brandService.saveBrand(brand, categories);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    /**
+     * @Description: 修改品牌
+     * @params: brand
+     * @return:
+     * @author: WangJiLin
+     * @Date: 2019/8/1
+     */
+    @PutMapping
+    public ResponseEntity<Void> updateBrand(Brand brand,@RequestParam("categories") List<Long> categories){
+    //    this.brandService.updateBrand(brand,categories);
+        return  ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 }

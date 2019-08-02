@@ -14,15 +14,19 @@ import java.util.List;
  * @author: WangJiLin
  * @Date: 2019-07-30 18:16
  */
-@Service
-public class CategoryService {
 
-    @Autowired
-    private CategoryMapper categoryMapper;
+public interface CategoryService {
 
-    public List<Category> queryListByParent(Long pid) {
-        Category category = new Category();
-        category.setParentId(pid);
-        return this.categoryMapper.select(category);
-    }
+
+     List<Category> queryListByParent(Long pid);
+
+    /**
+     * @Description: 通过品牌id查询商品分类
+     * @params: bid
+     * @return:
+     * @author: WangJiLin
+     * @Date: 2019/8/1
+     */
+     List<Category> queryByBrandId(Long bid);
+
 }
